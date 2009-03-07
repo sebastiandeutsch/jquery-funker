@@ -43,32 +43,41 @@ jQuery.fn.funker = function(message, options) {
     	// set css for the container
     	container.css({
     	   position:'absolute',
-    	   top:'0px',
+    	   top:jQuery(window).scrollTop(),
     	   left:'0px',
     	   width:'100%',
-    	   height:'0px',
+    	   height:'0px'
     	});
+
+		// initiallly closed
+		container.data('closed', true);
 		
     	// display the message
     	jQuery('#funker-text', container).html( message );
 	
         // show the container
     	container.animate({ height: '120px'}, 400, function() {
+			container.data('closed', false);
+			
         	// hide on click
-        	jQuery(document).mousedown(function() {
-        	   container.slideUp(400, function() {
-                   // stop interval
-                   window.clearInterval(doc.data('funker-interval'));
+        	jQuery(document).mouseup(function() {
+			   if(!container.data('closed')) {
+	        	   container.slideUp(400, function() {
+	                   // stop interval
+	                   window.clearInterval(doc.data('funker-interval'));
 
-                   // stop all animations
-               	   var background = jQuery('.background', container);
-               	   background.stop();
-               	   container.stop();
+	                   // stop all animations
+	               	   var background = jQuery('.background', container);
+	               	   background.stop();
+	               	   container.stop();
 
-                   // remove itself 
-        	       doc.data('funker', 'inactive');
-        	       container.remove();
-        	   });
+	                   // remove itself 
+	        	       doc.data('funker', 'inactive');
+	        	       container.remove();
+						
+					   container.data('closed', true);
+	        	   });
+				}
         	});
 
             // some notifier helpers
