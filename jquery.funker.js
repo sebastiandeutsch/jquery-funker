@@ -20,6 +20,8 @@ jQuery.fn.funker = function(message, options) {
     	// get defaults
     	var defaults = {
     		opacity				: '0.75',
+			marginTop			: 50,
+			marginBottom		: 50, 
     		redAlert            : false
     	};
 	
@@ -54,9 +56,13 @@ jQuery.fn.funker = function(message, options) {
 		
     	// display the message
     	jQuery('#funker-text', container).html( message );
-	
+		var backgroundHeight = (opts.marginBottom + jQuery('#funker-text').height() + opts.marginBottom) + 'px';
+		
+		// set background height
+		jQuery('.background', container).css('height', backgroundHeight);
+
         // show the container
-    	container.animate({ height: '120px'}, 400, function() {
+    	container.animate({ height: backgroundHeight }, 400, function() {
 			container.data('closed', false);
 			
         	// hide on click
